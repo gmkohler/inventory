@@ -1,0 +1,6 @@
+<h1><%= @client.name %></h1>
+<ul>
+  <% @client.inventory_items.each do |item| %>
+  <li><%= item.description %></li>
+  <% end %>
+</ul>

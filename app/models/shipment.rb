@@ -1,6 +1,9 @@
-class Shipment < InventoryItemTransaction
-  def determine_running_total!(txn)
-    txn ||= InventoryItemTransaction.find_previous_transaction(self)
-    self.running_total = txn.quantity += self.quantity
+class Shipment < LineItem
+  before_validation :determine_running_count!, on: [:create]
+
+  def determine_running_count!(prev_item = nil)
+    prev_item ||= LineItem.find_previous(self)
+    prev_count = prev_item.nil? ? 0 : prev_item.running_count
+    self.running_count = prev_count += self.quantity
   end
 end
