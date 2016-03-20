@@ -1,0 +1,57 @@
+<script type="text/javascript">
+
+</script>
+<h1>Create Order</h1>
+<form action="<%= line_items_url %>" method="POST">
+  <%= auth_token %>
+
+    <span style="font-weight:700">Transaction type</span>
+    <select name="transaction[type]">
+      <% LineItem.types.each do |item_type| %>
+        <option name="transaction[type]" value="<%= item_type %>"><%= item_type %></option>
+      <% end %>
+    </select>
+<br>
+<br>
+  <label>
+    <span style="font-weight:700">Client</span>
+    <select name="transaction[client_id]">
+      <% Client.ids_and_names.each do |info| %>
+        <option value="<%= info[:id] %>"><%= info[:name] %></option>
+      <% end %>
+    </select>
+  </label>
+<br>
+<br>
+<label>
+  <span style="font-weight:700">Time of transaction</span>
+  <input type="datetime-local" name="transaction[transaction_time]">
+</label>
+<br/>
+<br/>
+
+<table>
+  <tr>
+    <td>Inventory Item</td>
+    <td>
+      <select name="line_items[][inventory_item_id]">
+        <% InventoryItem.ids_and_names.each do |info| %>
+          <option value="<%= info[:id] %>"><%= info[:name] %></option>
+        <% end %>
+      </select>
+    </td>
+    <td>
+      Quantity
+    </td>
+    <td>
+      <input type="number" name="line_items[][quantity]" value="">
+    </td>
+  </tr>
+</table>
+
+<br>
+<br>
+
+<button type="button" onclick="addInventoryItem()">Add Line Item</button>
+<input type="submit">
+</form>

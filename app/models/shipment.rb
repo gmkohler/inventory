@@ -1,5 +1,6 @@
 class Shipment < LineItem
   before_validation :determine_running_count!, on: [:create]
+  validates :quantity, numericality: { greater_than: 0 }
 
   def determine_running_count!(prev_item = nil)
     prev_item ||= LineItem.find_previous(self)

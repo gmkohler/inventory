@@ -7,7 +7,14 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+  <div>
+  <% flash.each do |key, msg| %>
+    <%= "#{key}: #{msg}" %>
+  <% end %>
+  </div>
+<%= link_to "View Clients", clients_url %>
+<%= link_to "View Inventory", inventory_items_url %>
+<%= link_to "Create Transaction", new_line_item_url %>
 <%= yield %>
 
 </body>

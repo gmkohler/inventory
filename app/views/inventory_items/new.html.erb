@@ -1,0 +1,17 @@
+<h1>Create Inventory Item</h1>
+<form action="<%= inventory_items_url %>" method="POST">
+  <%= auth_token %>
+  <label>
+    Name:
+    <input type="text" name="inventory_item[name]" value="<%= @inv_item.name %>">
+  </label>
+  <label>
+    Short Description
+    <input type="text" name="inventory_item[description]" value="">
+  </label>
+  <label>
+    Reusable?
+    <input type="checkbox" name="inventory_item[reusable]">
+  </label>
+  <input type="submit">
+</form>

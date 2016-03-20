@@ -1,6 +1,7 @@
 <h1><%= @client.name %></h1>
+<h2>current stock:</h2>
 <ul>
-  <% @client.inventory_items.each do |item| %>
-  <li><%= item.description %></li>
+  <% @line_items.each do |item| %>
+  <li><%= "#{item.inventory_item.name}: #{item.running_count}" %></li>
   <% end %>
 </ul>

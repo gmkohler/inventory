@@ -1,11 +1,16 @@
 class InventoryItemsController < ApplicationController
+  def new
+    @inv_item = InventoryItem.new
+  end
 
   def create
     @inv_item = InventoryItem.new(inventory_params)
     if @inv_item.save
-
+      flash[:success] = "Inventory Item successfully created"
+      redirect_to inventory_item_url(@inv_item)
     else
-
+      flash.now[:errors] = @inv_item.errors.full_messages
+      render :new
     end
   end
 
@@ -19,6 +24,6 @@ class InventoryItemsController < ApplicationController
 
   private
   def inventory_params
-    params.require(:inventory_item).permit(:type, :name, :description)
+    params.require(:inventory_item).permit(:type, :name, :description, :reusable)
   end
 end

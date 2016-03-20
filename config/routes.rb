@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  root to: 'clients#index'
+  root to: 'application#root'
 
-  resources :inventory_items, only: [:index, :show]
+  resources :inventory_items, except: [:destroy, :edit, :update]
   resources :clients, except: [:destroy, :edit, :update]
+  resources :line_items, only: [:new, :create]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
