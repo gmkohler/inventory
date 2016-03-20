@@ -11,6 +11,30 @@ class LineItem < ActiveRecord::Base
   belongs_to :client
   belongs_to :inventory_item
 
+  def self.get_counts_by_clients(client_id, txn_time = nil)
+    # gets most recent transaction for each inventory item of a given client
+    txn_time ||= DateTime.now
+    self.select('DISTINCT ON (inventory_item_id) line_items.*')
+        .where(
+          LineItem.arel_table[:transaction_time].lt(txn_time),
+          client_id: client_id
+        )
+         .order(inventory_item_id: :asc, transaction_time: :desc)
+
+  end
+
+  def self.get_counts_by_inventory_item(inv_id, txn_time = nil)
+    # gets most recent transaction times for each client having a given
+    # inventory item
+    txn_time ||= DateTime.now
+    self.includes(:client)
+        .select('DISTINCT ON (client_id) line_items.*')
+        .where(
+          LineItem.arel_table[:transaction_time].lt(txn_time),
+          inventory_item_id: inv_id
+        ).order(client_id: :asc, transaction_time: :desc)
+  end
+
   def self.find_subsequents(line_item)
     self.where(
       LineItem.arel_table[:transaction_time].gt(line_item.transaction_time),
@@ -35,7 +59,7 @@ class LineItem < ActiveRecord::Base
     line_items_array = [self].concat(future_line_items)
     future_line_items.each.with_index do |line_item, j|
       line_item.determine_running_count!(line_items_array[j])
-      item.update({running_count: item.running_count})
+      line_item.update({running_count: line_item.running_count})
     end
   end
 

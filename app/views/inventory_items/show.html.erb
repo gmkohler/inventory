@@ -1,0 +1,12 @@
+<h1><%= @inv_item.name %></h1>
+<div>
+  <span><%= @inv_item.description %></span>
+</div>
+<div>
+  <h3>Clients with this item:</h3>
+  <ul>
+    <% @inv_item.clients.each do |client| %>
+    <li><%= client.name %></li>
+    <% end %>
+  </ul>
+</div>
