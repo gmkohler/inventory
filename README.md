@@ -5,8 +5,9 @@ inventory items.  A user can create clients, inventory items, and create
 transactions between them.  Transactions can be scheduled for the future, the
 present, or the past.
 
-To run, `bundle install` the gems and execute `rake db:seed` for some basic
-client and inventory item things built in.  Transactional data is left to user.
+To run, `bundle install` the gems and execute `rake db:create`,
+`rake db:migrate`, `rake db:seed` for some basic client and inventory item
+records built in.  Transactional data is left to user.
 
 Using line items, a user can see all items at a given client, or all clients
 with a given item.  The user can also look in the future or the past to see this
