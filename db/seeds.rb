@@ -5,3 +5,25 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Client.create([
+  {name: "Zesty"},
+  {name: "Google"},
+  {name: "Pets.com"},
+  {name: "Yo"},
+  {name: "Enron"}
+])
+
+InventoryItem.create([
+  {name: "fork",
+   description: "multiple metal prongs make this tool a must-have",
+   reusable: true},
+  {name: "can of cola",
+   description: "this will quench your thirst",
+   reusable: false},
+  {name: "paper plate",
+   description: "quite disposable",
+   reusable: false},
+  {name: "spatula",
+   description: "great for serving",
+   reusable: true}
+ ])
