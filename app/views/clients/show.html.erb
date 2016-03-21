@@ -1,16 +1,28 @@
 <% header_text = "Stock " + (@time ? "at #{@time.to_s}:" : "now:") %>
 <h1><%= @client.name %></h1>
 <h2><%= header_text %></h2>
-<ul>
-  <% @line_items.each do |item| %>
-  <li>
-    <%= link_to item.inventory_item.name, inventory_item_url(item.inventory_item) %>
-    <span><%= item.running_count %></span>
-  </li>
-  <% end %>
-</ul>
-<form action="<%= client_url(@client) %>" method="get">
-  <label for="time">Search for stock at a different time:</label>
-  <input type="datetime-local" name="time" id="time">
-  <input type="submit"value="Search">
-</form>
+<div class="">
+  <table>
+    <tbody>
+      <% @line_items.each do |item| %>
+      <tr>
+        <td><%= link_to item.inventory_item.name, inventory_item_url(item.inventory_item) %></td>
+        <td><span><%= item.running_count %></span></td>
+        <td>
+          <span>
+            <%="(last change: #{item.type} #{item.transaction_time.to_date})"%>
+          </span>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<br>
+<div>
+  <form action="<%= client_url(@client) %>" method="get">
+    <label for="time">Search for stock at a different time:</label>
+    <input type="datetime-local" name="time" id="time">
+    <input type="submit"value="Search">
+  </form>
+</div>

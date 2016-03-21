@@ -4,17 +4,21 @@
 </div>
 <div>
   <h3>Clients with this item:</h3>
-  <ul>
-    <% @line_items.each do |item| %>
-      <li>
-        <%= link_to item.client.name, client_url(item.client) %>
-        <span><%= item.running_count %></span>
-      </li>
-    <% end %>
-  </ul>
+  <table>
+    <tbody>
+      <% @line_items.each do |item| %>
+        <tr>
+          <td><%= link_to item.client.name, client_url(item.client) %></td>
+          <td><span><%= item.running_count %></span></td>
+          <td><span><%="(last change: #{item.type} #{item.transaction_time.to_date})"%></span></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
+<br>
 <div>
-  <form action="<%= inventory_item_url(@line_item) %>" method="get">
+  <form action="<%= inventory_item_url(@inv_item) %>" method="get">
     <label for="time">Search for stock at a different time:</label>
     <input type="datetime-local" name="time" id="time">
     <input type="submit"value="Search">

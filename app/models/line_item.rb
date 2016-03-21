@@ -18,12 +18,11 @@ class LineItem < ActiveRecord::Base
   def self.new_collection(transaction_params, line_item_params)
     line_item_params.map do |item_data|
       self.new(transaction_params.merge(item_data))
-      # data.each {|key, value| item.send("#{key}=", value)}
-      # item
     end
   end
 
-  def self.get_inventory_items_for_client(client_id, txn_time = DateTime.now)
+  def self.get_inventory_items_for_client(client_id, txn_time = nil )
+    txn_time ||= DateTime.now
     # gets most recent transaction for each inventory item of a given client
     self.includes(:inventory_item)
         .select("DISTINCT ON (inventory_item_id) line_items.*")
@@ -32,7 +31,8 @@ class LineItem < ActiveRecord::Base
         ).order(inventory_item_id: :asc, transaction_time: :desc)
   end
 
-  def self.get_clients_for_inventory_item(inventory_item_id, txn_time = Datetime.now)
+  def self.get_clients_for_inventory_item(inventory_item_id, txn_time = nil)
+    txn_time ||= DateTime.now
     # gets most recent transaction for each inventory item of a given client
     self.includes(:client)
         .select("DISTINCT ON (client_id) line_items.*")
