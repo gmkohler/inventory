@@ -19,7 +19,11 @@ class InventoryItemsController < ApplicationController
   end
 
   def show
-    @inv_item = InventoryItem.includes(:clients).find(params[:id])
+    # params[:time] can be nil, in which case the LineItem function will default
+    # to `today`
+    @time = params[:time]
+    @inv_item = InventoryItem.find(params[:id])
+    @line_items = LineItem.get_clients_for_inventory_item(params[:id], @time)
   end
 
   private

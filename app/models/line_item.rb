@@ -15,26 +15,32 @@ class LineItem < ActiveRecord::Base
     LINE_ITEM_TYPES
   end
 
-  def self.get_inventory_items_for_client(client_id, txn_time = nil)
+  def self.new_collection(transaction_params, line_item_params)
+    line_item_params.map do |item_data|
+      self.new(transaction_params.merge(item_data))
+      # data.each {|key, value| item.send("#{key}=", value)}
+      # item
+    end
+  end
+
+  def self.get_inventory_items_for_client(client_id, txn_time = DateTime.now)
     # gets most recent transaction for each inventory item of a given client
-    txn_time ||= DateTime.now
     self.includes(:inventory_item)
         .select("DISTINCT ON (inventory_item_id) line_items.*")
         .where(
           "transaction_time < ? AND client_id = ?", txn_time, client_id
-        ).order("inventory_item_id ASC, transaction_time DESC")
+        ).order(inventory_item_id: :asc, transaction_time: :desc)
   end
 
-  def self.get_clients_for_inventory_item(inventory_item_id, txn_time = nil)
+  def self.get_clients_for_inventory_item(inventory_item_id, txn_time = Datetime.now)
     # gets most recent transaction for each inventory item of a given client
-    txn_time ||= DateTime.now
     self.includes(:client)
         .select("DISTINCT ON (client_id) line_items.*")
         .where(
           "transaction_time < ? AND inventory_item_id = ?",
           txn_time,
           inventory_item_id
-        ).order("client_id ASC, transaction_time DESC")
+        ).order(client_id: :asc, transaction_time: :desc)
   end
 
   def self.find_subsequents(line_item)

@@ -5,8 +5,18 @@
 <div>
   <h3>Clients with this item:</h3>
   <ul>
-    <% @inv_item.clients.each do |client| %>
-    <li><%= client.name %></li>
+    <% @line_items.each do |item| %>
+      <li>
+        <%= link_to item.client.name, client_url(item.client) %>
+        <span><%= item.running_count %></span>
+      </li>
     <% end %>
   </ul>
+</div>
+<div>
+  <form action="<%= inventory_item_url(@line_item) %>" method="get">
+    <label for="time">Search for stock at a different time:</label>
+    <input type="datetime-local" name="time" id="time">
+    <input type="submit"value="Search">
+  </form>
 </div>

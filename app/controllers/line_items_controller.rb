@@ -1,12 +1,12 @@
 class LineItemsController < ApplicationController
   def new
   end
-  def create
-    all_saved = true
-    items = params[:line_items].each do |data|
-      item = LineItem.new(transaction_params)
-      data.each {|key, value| item.send("#{key}=", value)}
 
+  def create
+    line_items = LineItem.new_collection(transaction_params, params[:line_items])
+
+    all_saved = true
+    line_items.each do |item|
       unless item.save
         all_saved = false
         error_msgs = item.errors.full_messages
@@ -21,8 +21,6 @@ class LineItemsController < ApplicationController
       flash.now[:errors] = error_msgs
       render :new
     end
-
-
   end
   private
   def transaction_params

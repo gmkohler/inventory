@@ -19,8 +19,9 @@ class ClientsController < ApplicationController
   end
 
   def show
+    @time = params[:time]
     @client = Client.find(params[:id])
-    @line_items = LineItem.get_inventory_items_for_client(@client)
+    @line_items = LineItem.get_inventory_items_for_client(@client, @time)
   end
 
   private

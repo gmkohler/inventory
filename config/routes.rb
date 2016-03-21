@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'application#root'
+  root to: 'clients#index'
 
   resources :inventory_items, except: [:destroy, :edit, :update]
   resources :clients, except: [:destroy, :edit, :update]

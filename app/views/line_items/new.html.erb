@@ -1,16 +1,27 @@
 <script type="text/javascript">
-
+    $(document).ready(function() {
+        $("#add").click(function() {
+          $('#line-items-table tbody>tr:last')
+          .clone(true)
+          .insertAfter('#line-items-table tbody>tr:last');
+          $('#line-items-table tbody>tr:last #line-item-quantity').val('1');
+          return false;
+        });
+    });
 </script>
+
 <h1>Create Order</h1>
 <form action="<%= line_items_url %>" method="POST">
   <%= auth_token %>
 
-    <span style="font-weight:700">Transaction type</span>
-    <select name="transaction[type]">
-      <% LineItem.types.each do |item_type| %>
-        <option name="transaction[type]" value="<%= item_type %>"><%= item_type %></option>
-      <% end %>
-    </select>
+  <span style="font-weight:700">Transaction type</span>
+  <select name="transaction[type]">
+    <% LineItem.types.each do |item_type| %>
+      <option name="transaction[type]" value="<%= item_type %>">
+        <%= item_type %>
+      </option>
+    <% end %>
+  </select>
 <br>
 <br>
   <label>
@@ -30,28 +41,34 @@
 <br/>
 <br/>
 
-<table>
-  <tr>
-    <td>Inventory Item</td>
-    <td>
-      <select name="line_items[][inventory_item_id]">
-        <% InventoryItem.ids_and_names.each do |info| %>
-          <option value="<%= info[:id] %>"><%= info[:name] %></option>
-        <% end %>
-      </select>
-    </td>
-    <td>
-      Quantity
-    </td>
-    <td>
-      <input type="number" name="line_items[][quantity]" value="">
-    </td>
-  </tr>
+<table id="line-items-table">
+  <tbody>
+    <tr>
+      <td>Inventory Item</td>
+      <td>
+        <select id="line-item-name"
+                name="line_items[][inventory_item_id]">
+          <% InventoryItem.ids_and_names.each do |info| %>
+            <option value="<%= info[:id] %>"><%= info[:name] %></option>
+          <% end %>
+        </select>
+      </td>
+      <td>
+        Quantity
+      </td>
+      <td>
+        <input id="line-item-quantity"
+               type="number"
+               name="line_items[][quantity]"
+               value="1">
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <br>
 <br>
 
-<button type="button" onclick="addInventoryItem()">Add Line Item</button>
+<button type="button" id="add">Add Line Item</button>
 <input type="submit">
 </form>

@@ -1,7 +1,16 @@
+<% header_text = "Stock " + (@time ? "at #{@time.to_s}:" : "now:") %>
 <h1><%= @client.name %></h1>
-<h2>current stock:</h2>
+<h2><%= header_text %></h2>
 <ul>
   <% @line_items.each do |item| %>
-  <li><%= "#{item.inventory_item.name}: #{item.running_count}" %></li>
+  <li>
+    <%= link_to item.inventory_item.name, inventory_item_url(item.inventory_item) %>
+    <span><%= item.running_count %></span>
+  </li>
   <% end %>
 </ul>
+<form action="<%= client_url(@client) %>" method="get">
+  <label for="time">Search for stock at a different time:</label>
+  <input type="datetime-local" name="time" id="time">
+  <input type="submit"value="Search">
+</form>
